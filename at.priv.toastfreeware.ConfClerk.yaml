@@ -13,6 +13,7 @@ finish-args:
   - "--socket=wayland"
   # The app gets the schedules from the Internet
   - "--share=network"
+  - "--device=dri"
 
 cleanup:
   - "/include"
@@ -32,10 +33,11 @@ modules:
         - INSTALL_ROOT=/app
     post-install:
         - install -D -m a+r data/confclerk.desktop /app/share/applications/confclerk.desktop
-        #- install -D -m a+r data/confclerk.svg /app/share/icons/hicolor/scalable/apps/confclerk.svg
+        - install -D -m a+r data/confclerk.svg /app/share/icons/hicolor/scalable/apps/confclerk.svg
         - for size in 64 128 256 512; do rsvg-convert -w $size -h $size -f png -o $size.png /app/share/icons/hicolor/scalable/apps/confclerk.svg; install -Dm644 $size.png /app/share/icons/hicolor/${size}x${size}/apps/confclerk.png; done
         - install -D -m a+r at.priv.toastfreeware.ConfClerk.appdata.xml  /app/share/metainfo/at.priv.toastfreeware.ConfClerk.appdata.xml
         - install -D -m u+rwx,a+rx ./src/bin/confclerk /app/bin/confclerk
+        - rm -rf /app/usr/
 
     sources:
       - type: archive
