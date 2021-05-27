@@ -13,6 +13,7 @@ finish-args:
   - "--socket=wayland"
   # The app gets the schedules from the Internet
   - "--share=network"
+  # Give GPU access to make Qt not complain
   - "--device=dri"
 
 cleanup:
@@ -37,6 +38,7 @@ modules:
         - for size in 64 128 256 512; do rsvg-convert -w $size -h $size -f png -o $size.png /app/share/icons/hicolor/scalable/apps/confclerk.svg; install -Dm644 $size.png /app/share/icons/hicolor/${size}x${size}/apps/confclerk.png; done
         - install -D -m a+r at.priv.toastfreeware.ConfClerk.appdata.xml  /app/share/metainfo/at.priv.toastfreeware.ConfClerk.appdata.xml
         - install -D -m u+rwx,a+rx ./src/bin/confclerk /app/bin/confclerk
+        # This worksaround https://github.com/hughsie/appstream-glib/issues/271
         - rm -rf /app/usr/
 
     sources:
