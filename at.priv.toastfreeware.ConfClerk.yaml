@@ -1,10 +1,9 @@
 app-id: at.priv.toastfreeware.ConfClerk
 runtime: org.kde.Platform
-runtime-version: '5.12'
+runtime-version: '5.15'
 sdk: org.kde.Sdk
 command: confclerk
 rename-icon: confclerk
-copy-icon: true
 rename-desktop-file: confclerk.desktop
 finish-args:
   # X11 + XShm access
@@ -29,11 +28,12 @@ cleanup:
 modules:
   - name: confclerk
     buildsystem: qmake
+    make-install-args:
+        - INSTALL_ROOT=/app
     post-install:
         - install -D -m a+r data/confclerk.desktop /app/share/applications/confclerk.desktop
         #- install -D -m a+r data/confclerk.svg /app/share/icons/hicolor/scalable/apps/confclerk.svg
-        - rsvg-convert -w 128 -h 128 -f png -o data/confclerk.png data/confclerk.svg
-        - install -D -m a+r data/confclerk.png /app/share/icons/hicolor/128x128/apps/confclerk.png
+        - for size in 64 128 256 512; do rsvg-convert -w $size -h $size -f png -o $size.png /app/share/icons/hicolor/scalable/apps/confclerk.svg; install -Dm644 $size.png /app/share/icons/hicolor/${size}x${size}/apps/confclerk.png; done
         - install -D -m a+r at.priv.toastfreeware.ConfClerk.appdata.xml  /app/share/metainfo/at.priv.toastfreeware.ConfClerk.appdata.xml
         - install -D -m u+rwx,a+rx ./src/bin/confclerk /app/bin/confclerk
 
